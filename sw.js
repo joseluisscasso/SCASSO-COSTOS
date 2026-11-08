@@ -1,5 +1,5 @@
 /* SCASSO — Service worker: funcionamiento sin conexión (la app se guarda en el teléfono). */
-const VERSION = 'scasso-v1.0.0';
+const VERSION = 'scasso-v1.0.1';
 const SHELL = [
   './', './index.html', './manifest.webmanifest', './css/app.css',
   './js/decimal.js', './js/units.js', './js/format.js', './js/engine.js', './js/store.js', './js/xlsx.js',

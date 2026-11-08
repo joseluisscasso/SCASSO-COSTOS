@@ -190,13 +190,17 @@
       fr.readAsDataURL(file);
     });
   };
-  ui.photoField = (cur) => '<div class="f"><span class="small" style="font-weight:600;color:var(--olive-d)">Fotografía (opcional)</span>' + (cur ? '<img class="photo mt-s" data-photo-img src="' + cur + '" alt="">' : '<img class="photo mt-s" data-photo-img style="display:none" alt="">') + '<div class="btns mt-s"><label class="btn sec sm" style="cursor:pointer">Sacar / elegir foto<input type="file" accept="image/*" capture="environment" data-photo-in style="display:none"></label>' + '<button class="btn sec sm" type="button" data-photo-clear>Quitar</button></div></div>';
+  ui.photoField = (cur) => '<div class="f"><span class="small" style="font-weight:600;color:var(--olive-d)">Fotografía (opcional)</span>' + (cur ? '<img class="photo mt-s" data-photo-img src="' + cur + '" alt="">' : '<img class="photo mt-s" data-photo-img style="display:none" alt="">') + '<div class="btns mt-s"><label class="btn sec sm" style="cursor:pointer">Sacar foto<input type="file" accept="image/*" capture="environment" data-photo-cam style="display:none"></label><label class="btn sec sm" style="cursor:pointer">Elegir de galería<input type="file" accept="image/*" data-photo-in style="display:none"></label><button class="btn sec sm" type="button" data-photo-clear>Quitar</button></div></div>';
   ui.bindPhoto = function (root, get, set) {
-    const inp = ui.$('[data-photo-in]', root), img = ui.$('[data-photo-img]', root);
-    inp.onchange = async () => {
-      if (!inp.files[0]) return;
-      try { const d = await ui.pickPhoto(inp.files[0]); set(d); img.src = d; img.style.display = 'block'; } catch (e) { ui.toast(e.message, true); }
-    };
+    const img = ui.$('[data-photo-img]', root);
+    ['[data-photo-in]', '[data-photo-cam]'].forEach((sel) => {
+      const inp = ui.$(sel, root);
+      inp.onchange = async () => {
+        if (!inp.files[0]) return;
+        try { const d = await ui.pickPhoto(inp.files[0]); set(d); img.src = d; img.style.display = 'block'; } catch (e) { ui.toast(e.message, true); }
+        inp.value = '';
+      };
+    });
     ui.$('[data-photo-clear]', root).onclick = () => { set(''); img.style.display = 'none'; img.removeAttribute('src'); };
   };
 
